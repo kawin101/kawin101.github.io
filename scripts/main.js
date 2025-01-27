@@ -6,13 +6,15 @@ gtag('js', new Date());
 gtag('config', 'G-5T2PQELT0T');
 
 document.addEventListener('DOMContentLoaded', function() {
-  var countdownElement = document.getElementById('countdown');
+  var countdownElements = document.querySelectorAll('#countdown');
 
   function updateCountdown() {
     var now = new Date();
     var options = { timeZone: 'Asia/Bangkok', hour12: false };
     var bangkokTime = now.toLocaleString('en-GB', options);
-    countdownElement.textContent = bangkokTime;
+    countdownElements.forEach(function(element) {
+      element.textContent = bangkokTime;
+    });
   }
 
   updateCountdown();
