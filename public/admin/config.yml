@@ -1,0 +1,80 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "profile"
+    label: "Profile Settings"
+    files:
+      - label: "Profile Info"
+        name: "info"
+        file: "content/profile.json"
+        fields:
+          - {label: "Name", name: "name", widget: "string"}
+          - {label: "Role", name: "role", widget: "string"}
+          - {label: "Bio", name: "bio", widget: "text"}
+          - {label: "Avatar", name: "avatar", widget: "image"}
+          - {label: "Email", name: "email", widget: "string"}
+          - {label: "Resume PDF", name: "resume", widget: "file"}
+          - {label: "GitHub URL", name: "github", widget: "string"}
+          - {label: "LinkedIn URL", name: "linkedin", widget: "string", required: false}
+
+  - name: "experience"
+    label: "Work Experience"
+    folder: "content/experience"
+    create: true
+    slug: "{{date}}-{{slug}}"
+    fields:
+      - {label: "Position", name: "title", widget: "string"}
+      - {label: "Company", name: "company", widget: "string"}
+      - {label: "Location", name: "location", widget: "string"}
+      - {label: "Start Date", name: "startDate", widget: "datetime", format: "MMM YYYY"}
+      - {label: "End Date", name: "endDate", widget: "string", required: false, hint: "Leave empty for Present or use 'Present'"}
+      - {label: "Description", name: "body", widget: "markdown"}
+      - {label: "Skills Used", name: "technologies", widget: "list", required: false}
+      - {label: "App Store URL", name: "appStoreUrl", widget: "string", required: false}
+      - {label: "Play Store URL", name: "playStoreUrl", widget: "string", required: false}
+      - {label: "Logos/Links", name: "links", widget: "list", fields: [{label: "Label", name: "label", widget: "string"}, {label: "URL", name: "url", widget: "string"}]}
+
+  - name: "education"
+    label: "Education"
+    folder: "content/education"
+    create: true
+    slug: "{{date}}-{{slug}}"
+    fields:
+      - {label: "Degree", name: "degree", widget: "string"}
+      - {label: "School", name: "school", widget: "string"}
+      - {label: "Year/Period", name: "period", widget: "string"}
+      - {label: "Description", name: "body", widget: "markdown"}
+
+  - name: "skills"
+    label: "Skills"
+    folder: "content/skills"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Category", name: "category", widget: "select", options: ["Technical", "Soft Skills", "Tools", "Languages"]}
+      - {label: "Skill Name", name: "title", widget: "string"}
+      - {label: "Proficiency (1-100)", name: "proficiency", widget: "number", default: 80}
+      - {label: "Icon/Image", name: "icon", widget: "image", required: false}
+
+  - name: "projects"
+    label: "Projects"
+    folder: "content/projects"
+    create: true
+    slug: "{{date}}-{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime"}
+      - {label: "Description/Summary", name: "description", widget: "text"}
+      - {label: "Thumbnail", name: "thumbnail", widget: "image", required: false}
+      - {label: "PDF Documentation", name: "pdfUrl", widget: "file", required: false}
+      - {label: "Project URL", name: "projectUrl", widget: "string", required: false}
+      - {label: "Repository URL", name: "repoUrl", widget: "string", required: false}
+      - {label: "App Store URL", name: "appStoreUrl", widget: "string", required: false}
+      - {label: "Play Store URL", name: "playStoreUrl", widget: "string", required: false}
+      - {label: "Tags", name: "tags", widget: "list", default: ["Web"]}
+      - {label: "Content", name: "body", widget: "markdown"}
