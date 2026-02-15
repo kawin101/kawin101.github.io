@@ -26,6 +26,9 @@ export default async function Home() {
     content: await markdownToHtml(edu.content || '')
   })));
 
+  // Get latest blog post date for notification
+  const blogPosts = getAllItems("blog");
+
   return (
     <PortfolioUI
       profile={profile}
@@ -33,6 +36,7 @@ export default async function Home() {
       education={education}
       projects={projects}
       skills={skills}
+      blogPosts={blogPosts}
     />
   );
 }

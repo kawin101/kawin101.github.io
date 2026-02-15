@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import ExperienceTimeline from "./ExperienceTimeline";
 import SkillSection from "./SkillSection";
 
@@ -12,12 +12,20 @@ const fadeInUp = {
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
 };
 
-export default function PortfolioUI({ profile, experience, education, projects, skills }) {
+export default function PortfolioUI({ profile, experience, education, projects, skills, blogPosts = [] }) {
+    const [unreadCount, setUnreadCount] = useState(0);
 
     useEffect(() => {
         // Initialize Bootstrap JS for Navbar toggler
         import("bootstrap/dist/js/bootstrap.bundle.min.js");
-    }, []);
+
+        // Calculate unread posts
+        if (blogPosts.length > 0) {
+            const readPosts = JSON.parse(localStorage.getItem('read_posts') || '[]');
+            const unread = blogPosts.filter(post => !readPosts.includes(post.slug)).length;
+            setUnreadCount(unread);
+        }
+    }, [blogPosts]);
 
     const handleNavClick = () => {
         const navbarCollapse = document.getElementById("navbarNav");
@@ -49,6 +57,15 @@ export default function PortfolioUI({ profile, experience, education, projects, 
                             <li className="nav-item"><a className="nav-link" href="#experience" onClick={handleNavClick}>Experience</a></li>
                             <li className="nav-item"><a className="nav-link" href="#education" onClick={handleNavClick}>Education</a></li>
                             <li className="nav-item"><a className="nav-link" href="#portfolio" onClick={handleNavClick}>Portfolio</a></li>
+                            <li className="nav-item position-relative">
+                                <Link className="nav-link" href="/blog" onClick={handleNavClick}>Blog</Link>
+                                {unreadCount > 0 && (
+                                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {unreadCount}
+                                        <span className="visually-hidden">unread messages</span>
+                                    </span>
+                                )}
+                            </li>
                         </ul>
                         <div className="ms-lg-3 mt-3 mt-lg-0 text-center">
                             <a href={`mailto:${profile.email}`} className="btn btn-primary-glow rounded-pill px-4 btn-sm" onClick={handleNavClick}>Hire Me</a>

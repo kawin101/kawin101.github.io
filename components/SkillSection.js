@@ -29,7 +29,9 @@ export default function SkillSection({ skills }) {
                                 <div key={skill.title} className="d-flex align-items-center bg-surface border px-3 py-2 rounded-pill hover-card">
                                     {skill.icon && <img src={skill.icon} alt="" width="20" height="20" className="me-2" />}
                                     <span className="fw-medium">{skill.title}</span>
-                                    {/* Optional: Show proficiency bar if needed */}
+                                    {skill.proficiency && (
+                                        <span className="small text-muted ms-2 ps-2 border-start">{skill.proficiency}</span>
+                                    )}
                                 </div>
                             ))}
                         </div>

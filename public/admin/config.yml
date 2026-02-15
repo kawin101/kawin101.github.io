@@ -68,7 +68,7 @@ collections:
     fields:
       - {label: "Category", name: "category", widget: "select", options: ["Technical", "Soft Skills", "Tools", "Languages"]}
       - {label: "Skill Name", name: "title", widget: "string"}
-      - {label: "Proficiency (1-100)", name: "proficiency", widget: "number", default: 80}
+      - {label: "Proficiency", name: "proficiency", widget: "select", options: ["Native or Bilingual Proficiency", "Full Professional Proficiency", "Professional Working Proficiency", "Limited Working Proficiency", "Elementary Proficiency"], required: false, hint: "Select only for Languages category"}
       - {label: "Icon/Image", name: "icon", widget: "image", required: false}
 
   - name: "projects"
@@ -88,3 +88,18 @@ collections:
       - {label: "Play Store URL", name: "playStoreUrl", widget: "string", required: false}
       - {label: "Tags", name: "tags", widget: "list", default: ["Web"]}
       - {label: "Content", name: "body", widget: "markdown"}
+
+  - name: "blog"
+    label: "Blog"
+    folder: "content/blog"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Publish Date", name: "date", widget: "datetime"}
+      - {label: "Excerpt", name: "excerpt", widget: "text"}
+      - {label: "Thumbnail", name: "thumbnail", widget: "image", required: false}
+      - {label: "Image Focal Point", name: "image_position", widget: "focal_point", default: "50% 50%", required: false, hint: "Click on the image to set the focal point."}
+      - {label: "Body", name: "body", widget: "markdown"}
+
+
