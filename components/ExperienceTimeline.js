@@ -150,7 +150,9 @@ export default function ExperienceTimeline({ experience }) {
                                         </a>
                                     )}
                                     {job.links && job.links.map(link => (
-                                        <a key={link.url} href={link.url} target="_blank" className="btn btn-sm btn-outline-primary rounded-pill px-3 py-2">{link.label}</a>
+                                        <a key={link.url} href={link.url} target="_blank" className={`btn btn-sm rounded-pill px-3 py-2 ${link.platform === 'Apple' ? 'btn-secondary' : 'btn-primary-glow'}`}>
+                                            {link.label}
+                                        </a>
                                     ))}
                                 </div>
                             </div>

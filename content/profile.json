@@ -1,10 +1,28 @@
 {
-  "name": "Kawinphop Chomnikorn",
-  "role": "Software Engineer",
-  "bio": "Software Engineer at BOTNOI GROUP, Bangkok, Thailand. Experienced in Flutter, Dart, Firebase, and Mobile Application Development.",
-  "avatar": "https://avatars.githubusercontent.com/u/76491614",
-  "email": "kawinphop.chomnikorn@gmail.com",
   "github": "https://github.com/kawin101",
-  "linkedin": "",
-  "resume": "/assets/cv_kawinphop_chomnikorn.pdf"
+  "social_links": [
+    {
+      "platform": "Facebook",
+      "url": "https://www.facebook.com/profile.php?id=61564532357707",
+      "icon_image": "/images/uploads/facebook.png"
+    },
+    {
+      "platform": "Fastwork",
+      "url": "https://fastwork.co/user/kawin101/mobile-application-44485479",
+      "icon_image": "/images/uploads/fastwork.png"
+    },
+    {
+      "platform": "LINE: green01590159",
+      "url": "https://line.me/ti/p/2IFomqGew1",
+      "icon_image": "/images/uploads/line-small.jpeg"
+    }
+  ],
+  "bio": "2 years of experience in mobile application development. Currently leading the Botnoi Mobile Team for the \"Botnoi Voice – Text to Speech\" and \"AI Friend Hub\" for iOS and Android. Passionate about user-friendly interfaces, user experience, high-performance code, software testing, and launching products to global marketplaces. I hold a B.Sc. in Computer and Information Science from Khon Kaen University.",
+  "name": "Kawinphop Chomnikorn",
+  "resume": "/assets/cv_kawinphop_chomnikorn.pdf",
+  "role": "Software Engineer",
+  "avatar": "https://avatars.githubusercontent.com/u/76491614",
+  "role_badge": "Software Product Development",
+  "email": "kawinphop.chomnikorn@gmail.com",
+  "linkedin": ""
 }

@@ -68,7 +68,7 @@ export default function PortfolioUI({ profile, experience, education, projects, 
                             </li>
                         </ul>
                         <div className="ms-lg-3 mt-3 mt-lg-0 text-center">
-                            <a href={`mailto:${profile.email}`} className="btn btn-primary-glow rounded-pill px-4 btn-sm" onClick={handleNavClick}>Hire Me</a>
+                            <button onClick={() => { handleNavClick(); setShowContactModal(true); }} className="btn btn-primary-glow rounded-pill px-4 btn-sm">Hire Me</button>
                         </div>
                     </div>
                 </div>
@@ -84,7 +84,7 @@ export default function PortfolioUI({ profile, experience, education, projects, 
                             variants={fadeInUp}
                             className="col-lg-7 text-center text-lg-start mt-5 mt-lg-0"
                         >
-                            <span className="badge bg-surface text-primary border mb-3 px-3 py-2 rounded-pill"> Software Developer</span>
+                            <span className="badge bg-surface text-primary border mb-3 px-3 py-2 rounded-pill">{profile.role_badge || "Software Developer"}</span>
                             <h1 className="display-3 fw-bold mb-4 lh-sm">
                                 Hello, I'm <br />
                                 <span className="text-gradient">{profile.name}</span>
@@ -96,10 +96,20 @@ export default function PortfolioUI({ profile, experience, education, projects, 
                                 <a href="#portfolio" className="btn btn-primary-glow btn-lg rounded-pill px-5">View My Work</a>
                                 {profile.resume && <a href={profile.resume} className="btn btn-outline-dark btn-lg rounded-pill px-5" target="_blank" download>Download CV</a>}
                             </div>
-                            <div className="mt-5 text-muted small">
-                                {profile.github && <a href={profile.github} target="_blank" className="text-dark me-4 text-decoration-none"><i className="fab fa-github fa-lg me-2"></i>Github</a>}
-                                {profile.linkedin && <a href={profile.linkedin} target="_blank" className="text-dark me-4 text-decoration-none"><i className="fab fa-linkedin fa-lg me-2"></i>LinkedIn</a>}
-                                <a href={`mailto:${profile.email}`} className="text-dark text-decoration-none"><i className="fas fa-envelope fa-lg me-2"></i>Email</a>
+                            <div className="mt-5 d-flex flex-wrap gap-4 text-muted small">
+                                {profile.github && <a href={profile.github} target="_blank" className="text-dark text-decoration-none d-inline-flex align-items-center transition-transform hover:scale-105"><i className="fab fa-github fa-lg me-2"></i>Github</a>}
+                                {profile.linkedin && <a href={profile.linkedin} target="_blank" className="text-dark text-decoration-none d-inline-flex align-items-center transition-transform hover:scale-105"><i className="fab fa-linkedin fa-lg me-2"></i>LinkedIn</a>}
+                                {profile.social_links && profile.social_links.map((link, index) => (
+                                    <a key={index} href={link.url.startsWith('http') ? link.url : '#'} target={link.url.startsWith('http') ? "_blank" : "_self"} className="text-dark text-decoration-none d-inline-flex align-items-center transition-transform hover:scale-105">
+                                        {link.icon_image ? (
+                                            <img src={link.icon_image} alt={link.platform} width="24" height="24" className="me-2 rounded-circle object-fit-cover shadow-sm" style={{ border: '1px solid #eee' }} />
+                                        ) : (
+                                            link.icon && <i className={`${link.icon} fa-lg me-2`}></i>
+                                        )}
+                                        {link.platform}
+                                    </a>
+                                ))}
+                                <a href={`mailto:${profile.email}`} className="text-dark text-decoration-none d-inline-flex align-items-center transition-transform hover:scale-105"><i className="fas fa-envelope fa-lg me-2"></i>Email</a>
                             </div>
                         </motion.div>
 
@@ -313,13 +323,22 @@ export default function PortfolioUI({ profile, experience, education, projects, 
                 <div className="container">
                     <h2 className="mb-4 text-white">Let's Work Together</h2>
                     <p className="mb-4 text-white-50">Interested in my work? Feel free to reach out.</p>
-                    <a href={`mailto:${profile.email}`} className="btn btn-primary-glow btn-lg rounded-pill px-5 mb-5">Say Hello</a>
+                    <button onClick={() => setShowContactModal(true)} className="btn btn-primary-glow btn-lg rounded-pill px-5 mb-5">Say Hello</button>
 
                     <div className="border-top border-secondary opacity-25 mb-4"></div>
 
                     <div className="d-flex justify-content-center gap-4 mb-3">
                         {profile.github && <a href={profile.github} className="text-white hover:text-primary"><i className="fab fa-github fa-lg"></i></a>}
                         {profile.linkedin && <a href={profile.linkedin} className="text-white hover:text-primary"><i className="fab fa-linkedin fa-lg"></i></a>}
+                        {profile.social_links && profile.social_links.map((link, index) => (
+                            <a key={index} href={link.url.startsWith('http') ? link.url : '#'} target={link.url.startsWith('http') ? "_blank" : "_self"} className="text-white hover:text-primary" title={`${link.platform}: ${link.url}`}>
+                                {link.icon_image ? (
+                                    <img src={link.icon_image} alt={link.platform} width="20" height="20" className="rounded-circle object-fit-cover" />
+                                ) : (
+                                    link.icon ? <i className={`${link.icon} fa-lg`}></i> : <span className="small fw-bold">{link.platform.substring(0, 2)}</span>
+                                )}
+                            </a>
+                        ))}
                     </div>
 
                     <p className="small text-white-50 mb-0">

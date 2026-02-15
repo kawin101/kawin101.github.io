@@ -16,12 +16,20 @@ collections:
         fields:
           - {label: "Name", name: "name", widget: "string"}
           - {label: "Role", name: "role", widget: "string"}
+          - {label: "Role Badge", name: "role_badge", widget: "string", default: "Software Developer", required: false}
           - {label: "Bio", name: "bio", widget: "text"}
           - {label: "Avatar", name: "avatar", widget: "image"}
           - {label: "Email", name: "email", widget: "string"}
           - {label: "Resume PDF", name: "resume", widget: "file"}
           - {label: "GitHub URL", name: "github", widget: "string"}
           - {label: "LinkedIn URL", name: "linkedin", widget: "string", required: false}
+          - {label: "Custom Social Links", name: "social_links", widget: "list", required: false, fields: [
+              {label: "Platform Name", name: "platform", widget: "string", hint: "e.g. Facebook, Line, Fastwork"},
+              {label: "URL or Text", name: "url", widget: "string", hint: "e.g. https://... or ID"},
+              {label: "Icon Class (FontAwesome)", name: "icon", widget: "string", required: false, hint: "e.g. fab fa-facebook"},
+              {label: "Icon Image", name: "icon_image", widget: "image", required: false, hint: "Upload or paste URL for custom icon"}
+            ]}
+          - {label: "Contact Form Action URL", name: "form_action_url", widget: "string", required: false, hint: "URL from Formspree.io or similar service"}
 
   - name: "experience"
     label: "Work Experience"
@@ -39,7 +47,11 @@ collections:
       - {label: "Skills Used", name: "technologies", widget: "list", required: false}
       - {label: "App Store URL", name: "appStoreUrl", widget: "string", required: false}
       - {label: "Play Store URL", name: "playStoreUrl", widget: "string", required: false}
-      - {label: "Logos/Links", name: "links", widget: "list", fields: [{label: "Label", name: "label", widget: "string"}, {label: "URL", name: "url", widget: "string"}]}
+      - {label: "Logos/Links", name: "links", widget: "list", fields: [
+          {label: "Label", name: "label", widget: "string"}, 
+          {label: "URL", name: "url", widget: "string"},
+          {label: "Platform", name: "platform", widget: "select", options: ["Google", "Apple", "Other"], default: "Google"}
+        ]}
 
   - name: "education"
     label: "Education"
