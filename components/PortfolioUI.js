@@ -58,6 +58,11 @@ export default function PortfolioUI({ profile, experience, education, projects, 
                             <li className="nav-item"><a className="nav-link" href="#education" onClick={handleNavClick}>Education</a></li>
                             <li className="nav-item"><a className="nav-link" href="#portfolio" onClick={handleNavClick}>Portfolio</a></li>
                             <li className="nav-item position-relative">
+                                <Link className="nav-link" href="/ats" onClick={handleNavClick}>
+                                    ATS Tool <span className="badge bg-primary-glow text-white ms-1" style={{ fontSize: '0.6em', verticalAlign: 'middle' }}>AI</span>
+                                </Link>
+                            </li>
+                            <li className="nav-item position-relative">
                                 <Link className="nav-link" href="/blog" onClick={handleNavClick}>Blog</Link>
                                 {unreadCount > 0 && (
                                     <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">

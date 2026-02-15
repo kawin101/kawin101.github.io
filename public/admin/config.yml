@@ -114,4 +114,20 @@ collections:
       - {label: "Image Focal Point", name: "image_position", widget: "focal_point", default: "50% 50%", required: false, hint: "Click on the image to set the focal point."}
       - {label: "Body", name: "body", widget: "markdown"}
 
+  - name: "ats_history"
+    label: "ATS Analysis History"
+    folder: "content/ats-history"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime"}
+      - {label: "Score", name: "score", widget: "number"}
+      - {label: "Role", name: "role", widget: "string"}
+      - {label: "Company", name: "company", widget: "string"}
+      - {label: "Summary", name: "summary", widget: "text"}
+      - {label: "Matched Keywords Count", name: "keywords_match", widget: "number"}
+      - {label: "Missing Keywords Count", name: "keywords_missing", widget: "number"}
+      - {label: "Analysis Data (JSON)", name: "body", widget: "markdown", hint: "Full analysis data in JSON format."}
+
 
