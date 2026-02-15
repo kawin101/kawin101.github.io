@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import ExperienceTimeline from "./ExperienceTimeline";
 import SkillSection from "./SkillSection";
+import ContactModal from "./ContactModal";
 
 // Animation Variants
 const fadeInUp = {
@@ -14,6 +15,7 @@ const fadeInUp = {
 
 export default function PortfolioUI({ profile, experience, education, projects, skills, blogPosts = [] }) {
     const [unreadCount, setUnreadCount] = useState(0);
+    const [showContactModal, setShowContactModal] = useState(false);
 
     useEffect(() => {
         // Initialize Bootstrap JS for Navbar toggler
@@ -351,6 +353,13 @@ export default function PortfolioUI({ profile, experience, education, projects, 
                     </p>
                 </div>
             </footer>
+
+            {showContactModal && (
+                <ContactModal
+                    profile={profile}
+                    onClose={() => setShowContactModal(false)}
+                />
+            )}
         </div>
     );
 }
