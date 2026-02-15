@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "cms-proxy": "npx decap-server",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
@@ -23,6 +24,7 @@
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
+    "decap-server": "^3.5.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.6"
   }

@@ -1,6 +1,7 @@
 backend:
   name: git-gateway
   branch: main
+local_backend: true
 
 media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
@@ -31,8 +32,9 @@ collections:
       - {label: "Position", name: "title", widget: "string"}
       - {label: "Company", name: "company", widget: "string"}
       - {label: "Location", name: "location", widget: "string"}
-      - {label: "Start Date", name: "startDate", widget: "datetime", format: "MMM YYYY"}
-      - {label: "End Date", name: "endDate", widget: "string", required: false, hint: "Leave empty for Present or use 'Present'"}
+      - {label: "Start Date", name: "startDate", widget: "datetime", format: "MMM YYYY", time_format: false}
+      - {label: "Still in role?", name: "current", widget: "boolean", default: false, required: false}
+      - {label: "End Date", name: "endDate", widget: "datetime", format: "MMM YYYY", time_format: false, required: false, hint: "Required if 'Still in role?' is unchecked. Leave empty if checked."}
       - {label: "Description", name: "body", widget: "markdown"}
       - {label: "Skills Used", name: "technologies", widget: "list", required: false}
       - {label: "App Store URL", name: "appStoreUrl", widget: "string", required: false}
@@ -45,10 +47,18 @@ collections:
     create: true
     slug: "{{date}}-{{slug}}"
     fields:
-      - {label: "Degree", name: "degree", widget: "string"}
-      - {label: "School", name: "school", widget: "string"}
-      - {label: "Year/Period", name: "period", widget: "string"}
-      - {label: "Description", name: "body", widget: "markdown"}
+      - {label: "Degree Level", name: "degree", widget: "select", options: ["Primary School", "Junior High School", "Senior High School", "Vocational (Por Wor Chor)", "High Vocational (Por Wor Sor)", "Bachelor's Degree", "Master's Degree", "Doctoral Degree (PhD)"]}
+      - {label: "Major / Field of Study", name: "major", widget: "string", required: false}
+      - {label: "School / University", name: "school", widget: "string"}
+      - {label: "Start Date", name: "startDate", widget: "datetime", format: "MMM YYYY", time_format: false}
+      - {label: "End Date", name: "endDate", widget: "datetime", format: "MMM YYYY", time_format: false}
+      - {label: "Honors", name: "honors", widget: "select", options: ["None", "First Class Honors", "Second Class Honors"], default: "None", required: false}
+      - {label: "GPA", name: "gpa", widget: "number", value_type: "float", min: 0, max: 4, step: 0.01, required: false}
+      - {label: "Transcript File (PDF/Image)", name: "transcript", widget: "file", required: false}
+      - {label: "Certificate File (PDF/Image)", name: "certificate", widget: "file", required: false}
+      - {label: "Media URL (e.g. Project/Portfolio)", name: "mediaUrl", widget: "string", required: false}
+      - {label: "Media File", name: "mediaFile", widget: "file", required: false}
+      - {label: "Description", name: "body", widget: "markdown", required: false}
 
   - name: "skills"
     label: "Skills"

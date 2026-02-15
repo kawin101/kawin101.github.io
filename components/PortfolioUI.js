@@ -14,6 +14,19 @@ const fadeInUp = {
 
 export default function PortfolioUI({ profile, experience, education, projects, skills }) {
 
+    useEffect(() => {
+        // Initialize Bootstrap JS for Navbar toggler
+        import("bootstrap/dist/js/bootstrap.bundle.min.js");
+    }, []);
+
+    const handleNavClick = () => {
+        const navbarCollapse = document.getElementById("navbarNav");
+        if (navbarCollapse && navbarCollapse.classList.contains("show")) {
+            const toggler = document.querySelector(".navbar-toggler");
+            if (toggler) toggler.click();
+        }
+    };
+
     return (
         <div className="bg-white text-dark min-vh-100">
             {/* Sticky Navbar */}
@@ -25,20 +38,20 @@ export default function PortfolioUI({ profile, experience, education, projects, 
                 style={{ zIndex: 1000 }}
             >
                 <div className="container">
-                    <Link href="/" className="navbar-brand fw-bold text-gradient fs-4">{profile.name}</Link>
+                    <Link href="/" className="navbar-brand fw-bold text-gradient fs-4" onClick={handleNavClick}>{profile.name}</Link>
                     <button className="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav ms-auto fw-medium">
-                            <li className="nav-item"><a className="nav-link" href="#about">About</a></li>
-                            <li className="nav-item"><a className="nav-link" href="#skills">Skills</a></li>
-                            <li className="nav-item"><a className="nav-link" href="#experience">Experience</a></li>
-                            <li className="nav-item"><a className="nav-link" href="#education">Education</a></li>
-                            <li className="nav-item"><a className="nav-link" href="#portfolio">Portfolio</a></li>
+                            <li className="nav-item"><a className="nav-link" href="#about" onClick={handleNavClick}>About</a></li>
+                            <li className="nav-item"><a className="nav-link" href="#skills" onClick={handleNavClick}>Skills</a></li>
+                            <li className="nav-item"><a className="nav-link" href="#experience" onClick={handleNavClick}>Experience</a></li>
+                            <li className="nav-item"><a className="nav-link" href="#education" onClick={handleNavClick}>Education</a></li>
+                            <li className="nav-item"><a className="nav-link" href="#portfolio" onClick={handleNavClick}>Portfolio</a></li>
                         </ul>
-                        <div className="ms-3">
-                            <a href={`mailto:${profile.email}`} className="btn btn-primary-glow rounded-pill px-4 btn-sm">Hire Me</a>
+                        <div className="ms-lg-3 mt-3 mt-lg-0 text-center">
+                            <a href={`mailto:${profile.email}`} className="btn btn-primary-glow rounded-pill px-4 btn-sm" onClick={handleNavClick}>Hire Me</a>
                         </div>
                     </div>
                 </div>
@@ -143,27 +156,70 @@ export default function PortfolioUI({ profile, experience, education, projects, 
                         <p className="text-muted lead">Academic background and qualifications</p>
                     </motion.div>
                     <div className="row g-4">
-                        {education.map((edu, index) => (
-                            <motion.div
-                                key={edu.slug}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                                className="col-md-6"
-                            >
-                                <div className="glass-panel p-4 h-100 hover-card">
-                                    <div className="d-flex justify-content-between align-items-start mb-3">
-                                        <div className="icon-box bg-primary-glow text-white rounded p-3 me-3 mb-3">
-                                            <i className="fas fa-graduation-cap fa-lg"></i>
+                        {education.map((edu, index) => {
+                            // Format dates
+                            const dateFormatOptions = { month: 'short', year: 'numeric' };
+                            const startStr = edu.startDate ? new Date(edu.startDate).toLocaleDateString('en-GB', dateFormatOptions) : '';
+                            const endStr = edu.endDate ? new Date(edu.endDate).toLocaleDateString('en-GB', dateFormatOptions) : 'Present';
+                            const dateRange = startStr ? `${startStr} - ${endStr}` : edu.period;
+
+                            return (
+                                <motion.div
+                                    key={edu.slug}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.1 }}
+                                    className="col-md-6"
+                                >
+                                    <div className="glass-panel p-4 h-100 hover-card d-flex flex-column">
+                                        <div className="d-flex justify-content-between align-items-start mb-3">
+                                            <div className="icon-box bg-primary-glow text-white rounded p-3 me-3 mb-3">
+                                                <i className="fas fa-graduation-cap fa-lg"></i>
+                                            </div>
+                                            {dateRange && <span className="badge bg-light text-dark border">{dateRange}</span>}
                                         </div>
-                                        <span className="badge bg-light text-dark border">{edu.period}</span>
+
+                                        <h3 className="h5 fw-bold mb-1">{edu.degree}</h3>
+                                        {edu.major && <div className="text-secondary fw-medium mb-1">{edu.major}</div>}
+                                        <h4 className="h6 text-primary mb-3">{edu.school}</h4>
+
+                                        <div className="mb-3 small">
+                                            {edu.gpa && (
+                                                <span className="badge bg-surface text-secondary border me-2">
+                                                    GPA: {edu.gpa}
+                                                </span>
+                                            )}
+                                            {edu.honors && edu.honors !== "None" && (
+                                                <span className="badge bg-warning text-dark border border-warning">
+                                                    <i className="fas fa-medal me-1"></i>{edu.honors}
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        <div className="markdown-content text-secondary mb-4 flex-grow-1" dangerouslySetInnerHTML={{ __html: edu.content }} />
+
+                                        {/* Attachments & Links */}
+                                        <div className="d-flex flex-wrap gap-2 mt-auto pt-3 border-top">
+                                            {edu.transcript && (
+                                                <a href={edu.transcript} target="_blank" className="btn btn-sm btn-outline-primary rounded-pill">
+                                                    <i className="fas fa-file-alt me-1"></i>Transcript
+                                                </a>
+                                            )}
+                                            {edu.certificate && (
+                                                <a href={edu.certificate} target="_blank" className="btn btn-sm btn-outline-primary rounded-pill">
+                                                    <i className="fas fa-certificate me-1"></i>Certificate
+                                                </a>
+                                            )}
+                                            {(edu.mediaUrl || edu.mediaFile) && (
+                                                <a href={edu.mediaUrl || edu.mediaFile} target="_blank" className="btn btn-sm btn-outline-dark rounded-pill">
+                                                    <i className="fas fa-link me-1"></i>Media / Project
+                                                </a>
+                                            )}
+                                        </div>
                                     </div>
-                                    <h3 className="h4 fw-bold">{edu.degree}</h3>
-                                    <h4 className="h6 text-primary mb-3">{edu.school}</h4>
-                                    <div className="markdown-content text-secondary" dangerouslySetInnerHTML={{ __html: edu.content }} />
-                                </div>
-                            </motion.div>
-                        ))}
+                                </motion.div>
+                            );
+                        })}
                     </div>
                 </div>
             </section>
@@ -238,8 +294,8 @@ export default function PortfolioUI({ profile, experience, education, projects, 
 
             <footer className="bg-dark text-white text-center py-5">
                 <div className="container">
-                    <h2 className="mb-4">Let's Work Together</h2>
-                    <p className="mb-4 text-light opacity-75">Interested in my work? Feel free to reach out.</p>
+                    <h2 className="mb-4 text-white">Let's Work Together</h2>
+                    <p className="mb-4 text-white-50">Interested in my work? Feel free to reach out.</p>
                     <a href={`mailto:${profile.email}`} className="btn btn-primary-glow btn-lg rounded-pill px-5 mb-5">Say Hello</a>
 
                     <div className="border-top border-secondary opacity-25 mb-4"></div>
@@ -249,7 +305,7 @@ export default function PortfolioUI({ profile, experience, education, projects, 
                         {profile.linkedin && <a href={profile.linkedin} className="text-white hover:text-primary"><i className="fab fa-linkedin fa-lg"></i></a>}
                     </div>
 
-                    <p className="small opacity-50 mb-0">
+                    <p className="small text-white-50 mb-0">
                         Copyright &copy; {new Date().getFullYear()} {profile.name}. All Rights Reserved.
                     </p>
                 </div>
