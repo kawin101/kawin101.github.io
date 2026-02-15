@@ -15,6 +15,7 @@ import { analyzeATS } from '../../lib/ats-logic';
 import { generateContent, analyzeWithGemini } from '../../lib/gemini-client';
 import { analyzeWithWebLLM, initWebLLM, fixResumeWithWebLLM } from '../../lib/webllm-client';
 
+
 export default function ATSPageClient({ portfolioData }) {
     // State
     const [resumeText, setResumeText] = useState('');
@@ -290,6 +291,44 @@ export default function ATSPageClient({ portfolioData }) {
         }
     };
 
+    const handlePdfUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (file.type !== 'application/pdf') {
+            alert("Please upload a PDF file.");
+            return;
+        }
+
+        try {
+            // Dynamic import to prevent SSR issues
+            const pdfjsLib = await import('pdfjs-dist/build/pdf');
+
+            // Set worker source
+            if (!pdfjsLib.GlobalWorkerOptions.workerSrc) {
+                pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
+            }
+
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+
+            let fullText = '';
+
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const textContent = await page.getTextContent();
+                const pageText = textContent.items.map(item => item.str).join(' ');
+                fullText += pageText + '\n\n';
+            }
+
+            setResumeText(fullText);
+            logger.info('PDF Uploaded and Parsed', { fileName: file.name, pages: pdf.numPages });
+        } catch (error) {
+            console.error(error);
+            alert("Failed to parse PDF: " + error.message);
+        }
+    };
+
     return (
         <div className="container py-5">
             {/* History Offcanvas or Modal */}
@@ -399,6 +438,20 @@ export default function ATSPageClient({ portfolioData }) {
 
             <div className="row g-4 mb-5">
                 <div className="col-lg-6">
+                    <div className="d-flex justify-content-between align-items-center mb-2">
+                        <label className="form-label fw-bold mb-0">Resume Content</label>
+                        <div className="d-flex gap-2">
+                            <label className="btn btn-outline-danger btn-sm rounded-pill" style={{ cursor: 'pointer' }}>
+                                <i className="fas fa-file-pdf me-2"></i>Upload PDF
+                                <input
+                                    type="file"
+                                    accept=".pdf"
+                                    className="d-none"
+                                    onChange={handlePdfUpload}
+                                />
+                            </label>
+                        </div>
+                    </div>
                     <ResumeInput value={resumeText} onChange={setResumeText} />
                 </div>
                 <div className="col-lg-6">
