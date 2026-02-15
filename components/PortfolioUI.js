@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import ExperienceTimeline from "./ExperienceTimeline";
 import SkillSection from "./SkillSection";
-import ContactModal from "./ContactModal";
 
 // Animation Variants
 const fadeInUp = {
@@ -15,7 +14,6 @@ const fadeInUp = {
 
 export default function PortfolioUI({ profile, experience, education, projects, skills, blogPosts = [] }) {
     const [unreadCount, setUnreadCount] = useState(0);
-    const [showContactModal, setShowContactModal] = useState(false);
 
     useEffect(() => {
         // Initialize Bootstrap JS for Navbar toggler
@@ -75,7 +73,7 @@ export default function PortfolioUI({ profile, experience, education, projects, 
                             </li>
                         </ul>
                         <div className="ms-lg-3 mt-3 mt-lg-0 text-center">
-                            <button onClick={() => { handleNavClick(); setShowContactModal(true); }} className="btn btn-primary-glow rounded-pill px-4 btn-sm">Hire Me</button>
+                            <a href={`mailto:${profile.email}`} onClick={handleNavClick} className="btn btn-primary-glow rounded-pill px-4 btn-sm">Hire Me</a>
                         </div>
                     </div>
                 </div>
@@ -330,7 +328,7 @@ export default function PortfolioUI({ profile, experience, education, projects, 
                 <div className="container">
                     <h2 className="mb-4 text-white">Let's Work Together</h2>
                     <p className="mb-4 text-white-50">Interested in my work? Feel free to reach out.</p>
-                    <button onClick={() => setShowContactModal(true)} className="btn btn-primary-glow btn-lg rounded-pill px-5 mb-5">Say Hello</button>
+                    <a href={`mailto:${profile.email}`} className="btn btn-primary-glow btn-lg rounded-pill px-5 mb-5">Say Hello</a>
 
                     <div className="border-top border-secondary opacity-25 mb-4"></div>
 
@@ -353,13 +351,6 @@ export default function PortfolioUI({ profile, experience, education, projects, 
                     </p>
                 </div>
             </footer>
-
-            {showContactModal && (
-                <ContactModal
-                    profile={profile}
-                    onClose={() => setShowContactModal(false)}
-                />
-            )}
         </div>
     );
 }
