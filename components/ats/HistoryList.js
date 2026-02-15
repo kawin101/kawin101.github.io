@@ -5,16 +5,18 @@ export default function HistoryList({ onSelect, onRefresh }) {
     const [history, setHistory] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const fetchHistory = async () => {
+    const fetchHistory = () => {
         setLoading(true);
         try {
-            const res = await fetch('/api/ats/history');
-            const data = await res.json();
-            if (Array.isArray(data)) {
-                setHistory(data);
+            const storedHistory = localStorage.getItem('ats_history');
+            if (storedHistory) {
+                setHistory(JSON.parse(storedHistory));
+            } else {
+                setHistory([]);
             }
         } catch (error) {
-            logger.error('Failed to fetch history', { error });
+            logger.error('Failed to fetch history from localStorage', { error });
+            setHistory([]);
         } finally {
             setLoading(false);
         }
@@ -24,17 +26,16 @@ export default function HistoryList({ onSelect, onRefresh }) {
         fetchHistory();
     }, [onRefresh]);
 
-    const handleDelete = async (e, id) => {
+    const handleDelete = (e, id) => {
         e.stopPropagation();
         if (!confirm('Are you sure you want to delete this record?')) return;
 
         try {
-            const res = await fetch(`/api/ats/history/${id}`, { method: 'DELETE' });
-            if (res.ok) {
-                setHistory(prev => prev.filter(h => h.id !== id));
-            }
+            const updatedHistory = history.filter(h => h.id !== id);
+            setHistory(updatedHistory);
+            localStorage.setItem('ats_history', JSON.stringify(updatedHistory));
         } catch (error) {
-            logger.error('Failed to delete history', { error });
+            logger.error('Failed to delete history from localStorage', { error });
         }
     };
 

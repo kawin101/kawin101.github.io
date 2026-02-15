@@ -62,29 +62,31 @@ export default function ATSPageClient({ portfolioData }) {
         localStorage.setItem('ats_ai_provider', provider);
     };
 
-    const handleSaveHistory = async () => {
+    const handleSaveHistory = () => {
         if (!analysis) return;
 
         try {
-            const res = await fetch('/api/ats/history', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    score: analysis.score,
-                    role: targetRole,
-                    company: targetCompany,
-                    analysis: analysis,
-                    resumeText: resumeText, // Optional: store full text if needed
-                    jdText: jdText
-                })
-            });
+            const newEntry = {
+                id: Date.now().toString(),
+                score: analysis.score,
+                role: targetRole,
+                company: targetCompany,
+                analysis: analysis,
+                resumeText: resumeText,
+                jdText: jdText,
+                date: new Date().toISOString()
+            };
 
-            if (res.ok) {
-                alert("Analysis Saved!");
-                setRefreshHistory(prev => prev + 1);
-            }
+            const storedHistory = localStorage.getItem('ats_history');
+            const history = storedHistory ? JSON.parse(storedHistory) : [];
+            const updatedHistory = [newEntry, ...history];
+
+            localStorage.setItem('ats_history', JSON.stringify(updatedHistory));
+            alert("Analysis Saved to Local Storage!");
+            setRefreshHistory(prev => prev + 1);
+
         } catch (error) {
-            logger.error('Failed to save history', { error });
+            logger.error('Failed to save history to localStorage', { error });
             alert("Failed to save.");
         }
     };
