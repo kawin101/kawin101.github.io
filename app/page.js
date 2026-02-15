@@ -15,10 +15,15 @@ export default async function Home() {
   })));
 
   // Process markdown content for projects
-  const projects = await Promise.all(projectsRaw.map(async (project) => ({
-    ...project,
-    content: await markdownToHtml(project.content || '')
-  })));
+  const projects = await Promise.all(projectsRaw.map(async (project) => {
+    // Convert description from markdown to HTML
+    const descriptionHtml = await markdownToHtml(project.description || '');
+    return {
+      ...project,
+      description: descriptionHtml, // Overwrite with HTML
+      content: await markdownToHtml(project.content || '') // Keep content for backward compatibility if needed, though hidden in CMS now
+    };
+  }));
 
   // Process markdown content for education
   const education = await Promise.all(educationRaw.map(async (edu) => ({

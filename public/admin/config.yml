@@ -91,7 +91,7 @@ collections:
     fields:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Date", name: "date", widget: "datetime"}
-      - {label: "Description/Summary", name: "description", widget: "text"}
+      - {label: "Description/Summary", name: "description", widget: "markdown"}
       - {label: "Thumbnail", name: "thumbnail", widget: "image", required: false}
       - {label: "PDF Documentation", name: "pdfUrl", widget: "file", required: false}
       - {label: "Project URL", name: "projectUrl", widget: "string", required: false}
@@ -99,7 +99,6 @@ collections:
       - {label: "App Store URL", name: "appStoreUrl", widget: "string", required: false}
       - {label: "Play Store URL", name: "playStoreUrl", widget: "string", required: false}
       - {label: "Tags", name: "tags", widget: "list", default: ["Web"]}
-      - {label: "Content", name: "body", widget: "markdown"}
 
   - name: "blog"
     label: "Blog"

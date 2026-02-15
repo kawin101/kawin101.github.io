@@ -288,7 +288,7 @@ export default function PortfolioUI({ profile, experience, education, projects, 
                                     <div className="card-body p-4 d-flex flex-column">
                                         <h3 className="h5 fw-bold mb-2">{project.title}</h3>
                                         <p className="small text-muted mb-3">{new Date(project.date).getFullYear()}</p>
-                                        <p className="card-text text-secondary mb-4 flex-grow-1">{project.description}</p>
+                                        <div className="card-text text-secondary mb-4 flex-grow-1" dangerouslySetInnerHTML={{ __html: project.description }} />
 
                                         <div className="mb-4">
                                             {project.tags && project.tags.map(tag => (
