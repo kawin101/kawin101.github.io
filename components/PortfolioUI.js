@@ -271,55 +271,99 @@ export default function PortfolioUI({ profile, experience, education, projects, 
                     </motion.div>
 
                     <div className="row g-4">
-                        {projects.map((project, index) => (
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: index * 0.1 }}
-                                key={project.slug}
-                                className="col-md-6 col-lg-4"
-                            >
-                                <div className="card h-100 glass-panel border-0 hover-card overflow-hidden">
-                                    {project.thumbnail && (
-                                        <div className="position-relative" style={{ height: '240px', overflow: 'hidden' }}>
-                                            <img src={project.thumbnail} className="card-img-top object-fit-cover w-100 h-100 transition-transform hover:scale-105" alt={project.title} />
-                                        </div>
-                                    )}
-                                    <div className="card-body p-4 d-flex flex-column">
-                                        <h3 className="h5 fw-bold mb-2">{project.title}</h3>
-                                        <p className="small text-muted mb-3">{new Date(project.date).getFullYear()}</p>
-                                        <div className="card-text text-secondary mb-4 flex-grow-1" dangerouslySetInnerHTML={{ __html: project.description }} />
+                        {projects.map((project, index) => {
+                            // Calculate Duration
+                            const start = new Date(project.startDate || project.date);
+                            let end = new Date();
+                            if (!project.current && project.endDate) {
+                                end = new Date(project.endDate);
+                            } else if (!project.current && !project.endDate && project.date) {
+                                // Fallback for old data
+                                end = new Date(project.date);
+                            }
 
-                                        <div className="mb-4">
-                                            {project.tags && project.tags.map(tag => (
-                                                <span key={tag} className="badge bg-surface text-secondary border me-1 mb-1">{tag}</span>
-                                            ))}
-                                        </div>
+                            const dateFormatOptions = { month: 'short', year: 'numeric' };
+                            const startStr = !isNaN(start.getTime()) ? start.toLocaleDateString('en-GB', dateFormatOptions) : '';
+                            const endStr = project.current ? 'Present' : (!isNaN(end.getTime()) ? end.toLocaleDateString('en-GB', dateFormatOptions) : '');
 
-                                        <div className="d-flex gap-2 mt-auto">
-                                            {project.projectUrl && <a href={project.projectUrl} className="btn btn-primary-glow btn-sm flex-fill" target="_blank">Live Demo</a>}
-                                            {project.repoUrl && <a href={project.repoUrl} className="btn btn-outline-dark btn-sm flex-fill" target="_blank"><i className="fab fa-github"></i> Code</a>}
-                                        </div>
+                            let durationStr = '';
+                            if (!isNaN(start.getTime()) && !isNaN(end.getTime())) {
+                                let months = (end.getFullYear() - start.getFullYear()) * 12;
+                                months -= start.getMonth();
+                                months += end.getMonth();
+                                months += 1; // Include starting month
 
-                                        {/* Store Badges for Projects */}
-                                        {(project.appStoreUrl || project.playStoreUrl) && (
-                                            <div className="d-flex gap-2 mt-3 pt-3 border-top justify-content-center">
-                                                {project.appStoreUrl && (
-                                                    <a href={project.appStoreUrl} target="_blank" className="d-inline-block hover:opacity-75">
-                                                        <img src="/assets/badge-appstore.png" alt="App Store" height="30" />
-                                                    </a>
-                                                )}
-                                                {project.playStoreUrl && (
-                                                    <a href={project.playStoreUrl} target="_blank" className="d-inline-block hover:opacity-75">
-                                                        <img src="/assets/badge-playstore.png" alt="Play Store" height="30" />
+                                if (months > 0) {
+                                    const years = Math.floor(months / 12);
+                                    const remainingMonths = months % 12;
+                                    if (years > 0) durationStr += `${years} year${years > 1 ? 's' : ''}`;
+                                    if (remainingMonths > 0) {
+                                        if (years > 0) durationStr += ' ';
+                                        durationStr += `${remainingMonths} month${remainingMonths > 1 ? 's' : ''}`;
+                                    }
+                                }
+                            }
+
+                            return (
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    whileInView={{ opacity: 1, scale: 1 }}
+                                    transition={{ delay: index * 0.1 }}
+                                    key={project.slug}
+                                    className="col-md-6 col-lg-4"
+                                >
+                                    <div className="card h-100 glass-panel border-0 hover-card overflow-hidden">
+                                        {project.thumbnail && (
+                                            <div className="position-relative" style={{ height: '240px', overflow: 'hidden' }}>
+                                                <img src={project.thumbnail} className="card-img-top object-fit-cover w-100 h-100 transition-transform hover:scale-105" alt={project.title} />
+                                            </div>
+                                        )}
+                                        <div className="card-body p-4 d-flex flex-column">
+                                            <h3 className="h5 fw-bold mb-2">{project.title}</h3>
+                                            <div className="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                                                <p className="small text-muted mb-0">
+                                                    {startStr} {endStr ? `- ${endStr}` : ''}
+                                                </p>
+                                                {durationStr && <span className="badge bg-light text-dark border small">({durationStr})</span>}
+                                            </div>
+                                            <div className="card-text text-secondary mb-4 flex-grow-1" dangerouslySetInnerHTML={{ __html: project.description }} />
+
+                                            <div className="mb-4">
+                                                {project.tags && project.tags.map(tag => (
+                                                    <span key={tag} className="badge bg-surface text-secondary border me-1 mb-1">{tag}</span>
+                                                ))}
+                                            </div>
+
+                                            <div className="d-flex gap-2 mt-auto">
+                                                {project.projectUrl && <a href={project.projectUrl} className="btn btn-primary-glow btn-sm flex-fill" target="_blank">Live Demo</a>}
+                                                {project.repoUrl && <a href={project.repoUrl} className="btn btn-outline-dark btn-sm flex-fill" target="_blank"><i className="fab fa-github"></i> Code</a>}
+                                                {project.pdfUrl && (
+                                                    <a href={project.pdfUrl} className="btn btn-outline-danger btn-sm px-3" target="_blank" title="View PDF Documentation">
+                                                        <i className="fas fa-file-pdf me-1"></i> PDF
                                                     </a>
                                                 )}
                                             </div>
-                                        )}
+
+                                            {/* Store Badges for Projects */}
+                                            {(project.appStoreUrl || project.playStoreUrl) && (
+                                                <div className="d-flex gap-2 mt-3 pt-3 border-top justify-content-center">
+                                                    {project.appStoreUrl && (
+                                                        <a href={project.appStoreUrl} target="_blank" className="d-inline-block hover:opacity-75">
+                                                            <img src="/assets/badge-appstore.png" alt="App Store" height="30" />
+                                                        </a>
+                                                    )}
+                                                    {project.playStoreUrl && (
+                                                        <a href={project.playStoreUrl} target="_blank" className="d-inline-block hover:opacity-75">
+                                                            <img src="/assets/badge-playstore.png" alt="Play Store" height="30" />
+                                                        </a>
+                                                    )}
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
-                            </motion.div>
-                        ))}
+                                </motion.div>
+                            );
+                        })}
                     </div>
                 </div>
             </section>

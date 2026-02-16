@@ -90,7 +90,9 @@ collections:
     slug: "{{date}}-{{slug}}"
     fields:
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Date", name: "date", widget: "datetime"}
+      - {label: "Start Date", name: "startDate", widget: "datetime", format: "MMM YYYY", time_format: false}
+      - {label: "Still in role?", name: "current", widget: "boolean", default: false, required: false}
+      - {label: "End Date", name: "endDate", widget: "datetime", format: "MMM YYYY", time_format: false, required: false, hint: "Required if 'Still in role?' is unchecked. Leave empty if checked."}
       - {label: "Description/Summary", name: "description", widget: "markdown"}
       - {label: "Thumbnail", name: "thumbnail", widget: "image", required: false}
       - {label: "PDF Documentation", name: "pdfUrl", widget: "file", required: false}
