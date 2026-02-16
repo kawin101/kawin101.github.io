@@ -49,7 +49,7 @@ export default function BlogPostContent({ post, content }) {
                         </div>
                     )}
 
-                    <div className="markdown-content lead text-secondary" dangerouslySetInnerHTML={{ __html: content }} />
+                    <div className="markdown-content text-secondary" dangerouslySetInnerHTML={{ __html: content }} />
                 </article>
             </div>
 

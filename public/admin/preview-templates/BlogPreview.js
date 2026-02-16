@@ -5,7 +5,7 @@ var BlogPreview = createClass({
         var bgImage = this.props.getAsset(image);
         var title = entry.getIn(['data', 'title']);
         var date = entry.getIn(['data', 'date']);
-        var body = entry.getIn(['data', 'body']);
+        var content = entry.getIn(['data', 'content']);
         var imagePosition = entry.getIn(['data', 'image_position']) || 'center center';
 
         return h('div', { className: "bg-white min-vh-100 py-5" },
@@ -22,7 +22,7 @@ var BlogPreview = createClass({
                             style: { objectFit: 'cover', objectPosition: imagePosition }
                         })
                     ) : null,
-                    h('div', { className: "markdown-content lead text-secondary" }, this.props.widgetFor('body'))
+                    h('div', { className: "markdown-content text-secondary" }, this.props.widgetFor('content'))
                 )
             )
         );
