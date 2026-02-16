@@ -5,6 +5,14 @@ location: Bangkok, Thailand
 startDate: Apr 2023
 current: false
 endDate: Jun 2023
+technologies:
+  - UX
+  - UI
+  - Flutter
+  - Python
+  - LINE
+  - Botnoi Chatbot Platform
+  - GCP
 ---
 • Designed easy-to-use interfaces for websites, apps, and chatbots that look good on any screen.
 

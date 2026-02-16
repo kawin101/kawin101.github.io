@@ -18,7 +18,7 @@ export default function BlogList({ posts }) {
             const lowerTerm = searchTerm.toLowerCase();
             result = result.filter(post =>
                 post.title.toLowerCase().includes(lowerTerm) ||
-                (post.excerpt && post.excerpt.toLowerCase().includes(lowerTerm))
+                (post.content && post.content.toLowerCase().includes(lowerTerm))
             );
         }
 
@@ -33,6 +33,15 @@ export default function BlogList({ posts }) {
 
         return result;
     }, [posts, searchTerm, sortOrder]);
+
+    // Helper to truncate content
+    const truncateContent = (content, length = 150) => {
+        if (!content) return '';
+        // Remove markdown artifacts roughly
+        const cleanContent = content.replace(/[#*`\\]/g, '').replace(/\n/g, ' ').trim();
+        if (cleanContent.length <= length) return cleanContent;
+        return cleanContent.substring(0, length) + '...';
+    };
 
     return (
         <div className="bg-white min-vh-100 py-5">
@@ -98,11 +107,16 @@ export default function BlogList({ posts }) {
                                                 </span>
                                             </div>
                                             <h2 className="h4 fw-bold mb-3">
-                                                <Link href={`/blog/${post.slug}`} className="text-dark text-decoration-none stretched-link">
+                                                <Link href={`/blog/${post.slug}`} className="text-dark text-decoration-none">
                                                     {post.title}
                                                 </Link>
                                             </h2>
-                                            <p className="card-text text-secondary mb-4 flex-grow-1">{post.excerpt}</p>
+                                            <p className="card-text text-secondary mb-4 flex-grow-1">
+                                                {truncateContent(post.content)}
+                                            </p>
+                                            <Link href={`/blog/${post.slug}`} className="btn btn-link p-0 text-primary text-decoration-none fw-bold mt-auto stretched-link">
+                                                Read More <i className="fas fa-chevron-right ms-1 small"></i>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>

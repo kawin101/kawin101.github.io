@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import ExperienceTimeline from "./ExperienceTimeline";
 import SkillSection from "./SkillSection";
+import GlobalSearch from "./GlobalSearch";
 
 // Animation Variants
 const fadeInUp = {
@@ -14,6 +15,7 @@ const fadeInUp = {
 
 export default function PortfolioUI({ profile, experience, education, projects, skills, blogPosts = [] }) {
     const [unreadCount, setUnreadCount] = useState(0);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
 
     useEffect(() => {
         // Initialize Bootstrap JS for Navbar toggler
@@ -27,7 +29,16 @@ export default function PortfolioUI({ profile, experience, education, projects, 
         }
     }, [blogPosts]);
 
-    const handleNavClick = () => {
+    const handleNavClick = (e) => {
+        const target = e.currentTarget.getAttribute('href');
+        if (target?.startsWith('#')) {
+            e.preventDefault();
+            const element = document.querySelector(target);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
         const navbarCollapse = document.getElementById("navbarNav");
         if (navbarCollapse && navbarCollapse.classList.contains("show")) {
             const toggler = document.querySelector(".navbar-toggler");
@@ -35,8 +46,22 @@ export default function PortfolioUI({ profile, experience, education, projects, 
         }
     };
 
+    // Helper to truncate content
+    const truncateContent = (content, length = 100) => {
+        if (!content) return '';
+        const cleanContent = content.replace(/[#*`\\]/g, '').replace(/\n/g, ' ').trim();
+        if (cleanContent.length <= length) return cleanContent;
+        return cleanContent.substring(0, length) + '...';
+    };
+
     return (
         <div className="bg-white text-dark min-vh-100">
+            <GlobalSearch
+                isOpen={isSearchOpen}
+                onClose={() => setIsSearchOpen(false)}
+                data={{ projects, experience, education, blogPosts }}
+            />
+
             {/* Sticky Navbar */}
             <motion.nav
                 initial={{ y: -50, opacity: 0 }}
@@ -47,23 +72,38 @@ export default function PortfolioUI({ profile, experience, education, projects, 
             >
                 <div className="container">
                     <Link href="/" className="navbar-brand fw-bold text-gradient fs-4" onClick={handleNavClick}>{profile.name}</Link>
-                    <button className="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
+
+                    <div className="d-flex align-items-center ms-auto d-lg-none">
+                        <button
+                            className="btn btn-link text-dark p-2 me-2"
+                            onClick={() => setIsSearchOpen(true)}
+                            aria-label="Open Search"
+                        >
+                            <i className="fas fa-search fa-lg"></i>
+                        </button>
+                        <button className="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+
                     <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav ms-auto fw-medium">
-                            <li className="nav-item"><a className="nav-link" href="#about" onClick={handleNavClick}>About</a></li>
-                            <li className="nav-item"><a className="nav-link" href="#skills" onClick={handleNavClick}>Skills</a></li>
-                            <li className="nav-item"><a className="nav-link" href="#experience" onClick={handleNavClick}>Experience</a></li>
-                            <li className="nav-item"><a className="nav-link" href="#education" onClick={handleNavClick}>Education</a></li>
-                            <li className="nav-item"><a className="nav-link" href="#portfolio" onClick={handleNavClick}>Portfolio</a></li>
+                        <ul className="navbar-nav ms-auto fw-medium align-items-center">
+                            <li className="nav-item d-none d-lg-block">
+                                <button
+                                    className="btn btn-link nav-link text-dark p-2 me-2 border-0 shadow-none"
+                                    onClick={() => setIsSearchOpen(true)}
+                                    aria-label="Open Search"
+                                >
+                                    <i className="fas fa-search"></i>
+                                </button>
+                            </li>
                             <li className="nav-item position-relative">
                                 <Link className="nav-link" href="/ats" onClick={handleNavClick}>
                                     ATS Tool
                                 </Link>
                             </li>
                             <li className="nav-item position-relative">
-                                <Link className="nav-link" href="/blog" onClick={handleNavClick}>Blog</Link>
+                                <a className="nav-link" href="#blog" onClick={handleNavClick}>Blog</a>
                                 {unreadCount > 0 && (
                                     <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                         {unreadCount}
@@ -82,58 +122,71 @@ export default function PortfolioUI({ profile, experience, education, projects, 
             {/* Hero Section */}
             <section id="about" className="min-vh-100 d-flex align-items-center justify-content-center pt-5">
                 <div className="container pt-5">
-                    <div className="row align-items-center flex-column-reverse flex-lg-row">
-                        <motion.div
-                            initial="hidden"
-                            whileInView="visible"
-                            variants={fadeInUp}
-                            className="col-lg-7 text-center text-lg-start mt-5 mt-lg-0"
-                        >
-                            <span className="badge bg-surface text-primary border mb-3 px-3 py-2 rounded-pill">{profile.role_badge || "Software Developer"}</span>
-                            <h1 className="display-3 fw-bold mb-4 lh-sm">
-                                Hello, I'm <br />
-                                <span className="text-gradient">{profile.name}</span>
-                            </h1>
-                            <h2 className="h3 text-secondary mb-4 fw-normal">{profile.role}</h2>
-                            <p className="lead text-muted mb-5 w-lg-75">{profile.bio}</p>
-
-                            <div className="d-flex gap-3 justify-content-center justify-content-lg-start">
-                                <a href="#portfolio" className="btn btn-primary-glow btn-lg rounded-pill px-5">View My Work</a>
-                                {profile.resume && <a href={profile.resume} className="btn btn-outline-dark btn-lg rounded-pill px-5" target="_blank" download>Download CV</a>}
-                            </div>
-                            <div className="mt-5 d-flex flex-wrap gap-4 text-muted small">
-                                {profile.github && <a href={profile.github} target="_blank" className="text-dark text-decoration-none d-inline-flex align-items-center transition-transform hover:scale-105"><i className="fab fa-github fa-lg me-2"></i>Github</a>}
-                                {profile.linkedin && <a href={profile.linkedin} target="_blank" className="text-dark text-decoration-none d-inline-flex align-items-center transition-transform hover:scale-105"><i className="fab fa-linkedin fa-lg me-2"></i>LinkedIn</a>}
-                                {profile.social_links && profile.social_links.map((link, index) => (
-                                    <a key={index} href={link.url.startsWith('http') ? link.url : '#'} target={link.url.startsWith('http') ? "_blank" : "_self"} className="text-dark text-decoration-none d-inline-flex align-items-center transition-transform hover:scale-105">
-                                        {link.icon_image ? (
-                                            <img src={link.icon_image} alt={link.platform} width="24" height="24" className="me-2 rounded-circle object-fit-cover shadow-sm" style={{ border: '1px solid #eee' }} />
-                                        ) : (
-                                            link.icon && <i className={`${link.icon} fa-lg me-2`}></i>
-                                        )}
-                                        {link.platform}
-                                    </a>
-                                ))}
-                                <a href={`mailto:${profile.email}`} className="text-dark text-decoration-none d-inline-flex align-items-center transition-transform hover:scale-105"><i className="fas fa-envelope fa-lg me-2"></i>Email</a>
-                            </div>
-                        </motion.div>
-
+                    <div className="row align-items-center justify-content-center">
+                        {/* Profile Image - Top */}
                         <motion.div
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.8 }}
-                            className="col-lg-5 text-center"
+                            className="col-12 text-center mb-5"
                         >
                             <div className="position-relative d-inline-block">
                                 <div className="position-absolute top-0 start-0 w-100 h-100 bg-primary opacity-10 rounded-circle blur-3xl" style={{ filter: 'blur(60px)', transform: 'scale(1.2)', zIndex: -1 }}></div>
                                 <Image
                                     src={profile.avatar}
                                     alt={profile.name}
-                                    width={350}
-                                    height={350}
+                                    width={280}
+                                    height={280}
                                     className="rounded-circle shadow-lg border border-4 border-white object-fit-cover"
                                     unoptimized
                                 />
+                            </div>
+                        </motion.div>
+
+                        {/* Text Content - Bottom */}
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            variants={fadeInUp}
+                            className="col-12 text-center mx-auto"
+                        >
+                            <span className="badge bg-surface text-primary border mb-3 px-3 py-2 rounded-pill">{profile.role_badge || "Software Developer"}</span>
+                            <h1 className="display-4 fw-bold mb-4 lh-sm">
+                                Hello, I'm <br />
+                                <span className="text-gradient">{profile.name}</span>
+                            </h1>
+                            <h2 className="h4 text-secondary mb-4 fw-normal">{profile.role}</h2>
+                            <p className="lead text-muted mb-5 mx-auto w-md-75">{profile.bio}</p>
+
+                            {/* Redesigned Social Links Layout - Moved Above Button */}
+                            <div className="d-flex flex-wrap gap-4 justify-content-center text-muted small border-top pt-5 mb-5">
+                                {profile.github && (
+                                    <a href={profile.github} target="_blank" className="text-dark text-decoration-none d-inline-flex align-items-center transition-all hover:text-primary hover:scale-105">
+                                        <i className="fab fa-github fa-lg me-2"></i>Github
+                                    </a>
+                                )}
+                                {profile.linkedin && (
+                                    <a href={profile.linkedin} target="_blank" className="text-dark text-decoration-none d-inline-flex align-items-center transition-all hover:text-primary hover:scale-105">
+                                        <i className="fab fa-linkedin fa-lg me-2"></i>LinkedIn
+                                    </a>
+                                )}
+                                {profile.social_links && profile.social_links.map((link, index) => (
+                                    <a key={index} href={link.url.startsWith('http') ? link.url : '#'} target={link.url.startsWith('http') ? "_blank" : "_self"} className="text-dark text-decoration-none d-inline-flex align-items-center transition-all hover:text-primary hover:scale-105">
+                                        {link.icon_image ? (
+                                            <img src={link.icon_image} alt={link.platform} width="20" height="20" className="me-2 rounded-circle object-fit-cover shadow-sm" style={{ border: '1px solid #eee' }} />
+                                        ) : (
+                                            link.icon && <i className={`${link.icon} fa-lg me-2`}></i>
+                                        )}
+                                        {link.platform}
+                                    </a>
+                                ))}
+                                <a href={`mailto:${profile.email}`} className="text-dark text-decoration-none d-inline-flex align-items-center transition-all hover:text-primary hover:scale-105">
+                                    <i className="fas fa-envelope fa-lg me-2"></i>Email
+                                </a>
+                            </div>
+
+                            <div className="d-flex gap-3 justify-content-center">
+                                {profile.resume && <a href={profile.resume} className="btn btn-primary-glow btn-lg rounded-pill px-5 shadow-sm" target="_blank" download>Download CV</a>}
                             </div>
                         </motion.div>
                     </div>
@@ -364,6 +417,72 @@ export default function PortfolioUI({ profile, experience, education, projects, 
                                 </motion.div>
                             );
                         })}
+                    </div>
+                </div>
+            </section>
+
+            {/* Blog Section (New SPA integration) */}
+            <section id="blog" className="py-5 bg-surface">
+                <div className="container">
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={fadeInUp}
+                        className="text-center mb-5"
+                    >
+                        <h2 className="display-5 fw-bold mb-3">Latest Stories</h2>
+                        <p className="text-muted lead">Thoughts, updates, and tech articles</p>
+                    </motion.div>
+
+                    <div className="row g-4">
+                        {blogPosts.length > 0 ? (
+                            blogPosts.slice(0, 3).map((post, index) => (
+                                <motion.div
+                                    key={post.slug}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.1 }}
+                                    className="col-md-4"
+                                >
+                                    <div className="card h-100 border-0 shadow-sm hover-card">
+                                        {post.thumbnail && (
+                                            <div style={{ height: '200px', overflow: 'hidden' }}>
+                                                <img
+                                                    src={post.thumbnail}
+                                                    alt={post.title}
+                                                    className="card-img-top object-fit-cover w-100 h-100"
+                                                    style={{ objectPosition: post.image_position || 'center' }}
+                                                />
+                                            </div>
+                                        )}
+                                        <div className="card-body p-4 d-flex flex-column">
+                                            <div className="small text-muted mb-2">
+                                                {new Date(post.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                            </div>
+                                            <h3 className="h5 fw-bold mb-3">
+                                                <Link href={`/blog/${post.slug}`} className="text-dark text-decoration-none transition-colors hover:text-primary">
+                                                    {post.title}
+                                                </Link>
+                                            </h3>
+                                            <p className="small text-secondary mb-4 flex-grow-1">
+                                                {truncateContent(post.content)}
+                                            </p>
+                                            <Link href={`/blog/${post.slug}`} className="btn btn-link p-0 text-primary text-decoration-none fw-bold mt-auto stretched-link">
+                                                Read More <i className="fas fa-chevron-right ms-1 small"></i>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            ))
+                        ) : (
+                            <div className="col-12 text-center py-5">
+                                <p className="text-muted">Coming soon...</p>
+                            </div>
+                        )}
+                        <div className="col-12 text-center mt-5">
+                            <Link href="/blog" className="btn btn-outline-primary rounded-pill px-5">View All Posts</Link>
+                        </div>
                     </div>
                 </div>
             </section>

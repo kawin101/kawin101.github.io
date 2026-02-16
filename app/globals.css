@@ -29,11 +29,27 @@
 }
 
 body {
-  background-color: var(--bg-body);
+  background-color: var(--bg-surface);
+  /* Background outside the container */
   color: var(--text-primary);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
   scroll-behavior: smooth;
+}
+
+.main-container {
+  max-width: 768px;
+  margin: 0 auto;
+  background-color: var(--bg-body);
+  /* Content area background */
+  min-height: 100vh;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+/* Ensure navbar stays centered or fits the container */
+.navbar .container {
+  max-width: 768px;
 }
 
 /* Custom Scrollbar */
