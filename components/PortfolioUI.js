@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import ExperienceTimeline from "./ExperienceTimeline";
 import SkillSection from "./SkillSection";
 import GlobalSearch from "./GlobalSearch";
+import Navbar from "./Navbar";
 
 // Animation Variants
 const fadeInUp = {
@@ -49,7 +50,12 @@ export default function PortfolioUI({ profile, experience, education, projects, 
     // Helper to truncate content
     const truncateContent = (content, length = 100) => {
         if (!content) return '';
-        const cleanContent = content.replace(/[#*`\\]/g, '').replace(/\n/g, ' ').trim();
+        // Remove HTML tags and markdown artifacts
+        const cleanContent = content
+            .replace(/<[^>]*>/g, '') // Strip HTML tags
+            .replace(/[#*`\\]/g, '') // Strip markdown artifacts
+            .replace(/\n/g, ' ')     // Replace newlines with spaces
+            .trim();
         if (cleanContent.length <= length) return cleanContent;
         return cleanContent.substring(0, length) + '...';
     };
@@ -62,62 +68,7 @@ export default function PortfolioUI({ profile, experience, education, projects, 
                 data={{ projects, experience, education, blogPosts }}
             />
 
-            {/* Sticky Navbar */}
-            <motion.nav
-                initial={{ y: -50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6 }}
-                className="navbar navbar-expand-lg navbar-light glass-nav fixed-top px-3"
-                style={{ zIndex: 1000 }}
-            >
-                <div className="container">
-                    <Link href="/" className="navbar-brand fw-bold text-gradient fs-4" onClick={handleNavClick}>{profile.name}</Link>
-
-                    <div className="d-flex align-items-center ms-auto d-lg-none">
-                        <button
-                            className="btn btn-link text-dark p-2 me-2"
-                            onClick={() => setIsSearchOpen(true)}
-                            aria-label="Open Search"
-                        >
-                            <i className="fas fa-search fa-lg"></i>
-                        </button>
-                        <button className="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                            <span className="navbar-toggler-icon"></span>
-                        </button>
-                    </div>
-
-                    <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav ms-auto fw-medium align-items-center">
-                            <li className="nav-item d-none d-lg-block">
-                                <button
-                                    className="btn btn-link nav-link text-dark p-2 me-2 border-0 shadow-none"
-                                    onClick={() => setIsSearchOpen(true)}
-                                    aria-label="Open Search"
-                                >
-                                    <i className="fas fa-search"></i>
-                                </button>
-                            </li>
-                            <li className="nav-item position-relative">
-                                <Link className="nav-link" href="/ats" onClick={handleNavClick}>
-                                    ATS Tool
-                                </Link>
-                            </li>
-                            <li className="nav-item position-relative">
-                                <a className="nav-link" href="#blog" onClick={handleNavClick}>Blog</a>
-                                {unreadCount > 0 && (
-                                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                        {unreadCount}
-                                        <span className="visually-hidden">unread messages</span>
-                                    </span>
-                                )}
-                            </li>
-                        </ul>
-                        <div className="ms-lg-3 mt-3 mt-lg-0 text-center">
-                            <a href={`mailto:${profile.email}`} onClick={handleNavClick} className="btn btn-primary-glow rounded-pill px-4 btn-sm">Hire Me</a>
-                        </div>
-                    </div>
-                </div>
-            </motion.nav>
+            <Navbar profile={profile} onSearchClick={() => setIsSearchOpen(true)} />
 
             {/* Hero Section */}
             <section id="about" className="min-vh-100 d-flex align-items-center justify-content-center pt-5">
@@ -309,7 +260,7 @@ export default function PortfolioUI({ profile, experience, education, projects, 
                 </div>
             </section>
 
-            {/* Portfolio Section */}
+            {/* Portfolio Section (Sync with Blog UI) */}
             <section id="portfolio" className="py-5">
                 <div className="container">
                     <motion.div
@@ -320,103 +271,59 @@ export default function PortfolioUI({ profile, experience, education, projects, 
                         className="text-center mb-5"
                     >
                         <h2 className="display-5 fw-bold mb-3">Featured Projects</h2>
-                        <p className="text-muted lead">A selection of my best work</p>
+                        <p className="text-muted lead">A selection of my best work and professional journey</p>
                     </motion.div>
 
                     <div className="row g-4">
-                        {projects.map((project, index) => {
-                            // Calculate Duration
-                            const start = new Date(project.startDate || project.date);
-                            let end = new Date();
-                            if (!project.current && project.endDate) {
-                                end = new Date(project.endDate);
-                            } else if (!project.current && !project.endDate && project.date) {
-                                // Fallback for old data
-                                end = new Date(project.date);
-                            }
-
-                            const dateFormatOptions = { month: 'short', year: 'numeric' };
-                            const startStr = !isNaN(start.getTime()) ? start.toLocaleDateString('en-GB', dateFormatOptions) : '';
-                            const endStr = project.current ? 'Present' : (!isNaN(end.getTime()) ? end.toLocaleDateString('en-GB', dateFormatOptions) : '');
-
-                            let durationStr = '';
-                            if (!isNaN(start.getTime()) && !isNaN(end.getTime())) {
-                                let months = (end.getFullYear() - start.getFullYear()) * 12;
-                                months -= start.getMonth();
-                                months += end.getMonth();
-                                months += 1; // Include starting month
-
-                                if (months > 0) {
-                                    const years = Math.floor(months / 12);
-                                    const remainingMonths = months % 12;
-                                    if (years > 0) durationStr += `${years} year${years > 1 ? 's' : ''}`;
-                                    if (remainingMonths > 0) {
-                                        if (years > 0) durationStr += ' ';
-                                        durationStr += `${remainingMonths} month${remainingMonths > 1 ? 's' : ''}`;
-                                    }
-                                }
-                            }
-
-                            return (
-                                <motion.div
-                                    initial={{ opacity: 0, scale: 0.95 }}
-                                    whileInView={{ opacity: 1, scale: 1 }}
-                                    transition={{ delay: index * 0.1 }}
-                                    key={project.slug}
-                                    className="col-md-6 col-lg-4"
-                                >
-                                    <div className="card h-100 glass-panel border-0 hover-card overflow-hidden">
-                                        {project.thumbnail && (
-                                            <div className="position-relative" style={{ height: '240px', overflow: 'hidden' }}>
-                                                <img src={project.thumbnail} className="card-img-top object-fit-cover w-100 h-100 transition-transform hover:scale-105" alt={project.title} />
-                                            </div>
-                                        )}
-                                        <div className="card-body p-4 d-flex flex-column">
-                                            <h3 className="h5 fw-bold mb-2">{project.title}</h3>
-                                            <div className="d-flex flex-wrap justify-content-between align-items-center mb-3">
-                                                <p className="small text-muted mb-0">
-                                                    {startStr} {endStr ? `- ${endStr}` : ''}
-                                                </p>
-                                                {durationStr && <span className="badge bg-light text-dark border small">({durationStr})</span>}
-                                            </div>
-                                            <div className="card-text text-secondary mb-4 flex-grow-1" dangerouslySetInnerHTML={{ __html: project.description }} />
-
-                                            <div className="mb-4">
-                                                {project.tags && project.tags.map(tag => (
-                                                    <span key={tag} className="badge bg-surface text-secondary border me-1 mb-1">{tag}</span>
-                                                ))}
-                                            </div>
-
-                                            <div className="d-flex gap-2 mt-auto">
-                                                {project.projectUrl && <a href={project.projectUrl} className="btn btn-primary-glow btn-sm flex-fill" target="_blank">Live Demo</a>}
-                                                {project.repoUrl && <a href={project.repoUrl} className="btn btn-outline-dark btn-sm flex-fill" target="_blank"><i className="fab fa-github"></i> Code</a>}
-                                                {project.pdfUrl && (
-                                                    <a href={project.pdfUrl} className="btn btn-outline-danger btn-sm px-3" target="_blank" title="View PDF Documentation">
-                                                        <i className="fas fa-file-pdf me-1"></i> PDF
-                                                    </a>
-                                                )}
-                                            </div>
-
-                                            {/* Store Badges for Projects */}
-                                            {(project.appStoreUrl || project.playStoreUrl) && (
-                                                <div className="d-flex gap-2 mt-3 pt-3 border-top justify-content-center">
-                                                    {project.appStoreUrl && (
-                                                        <a href={project.appStoreUrl} target="_blank" className="d-inline-block hover:opacity-75">
-                                                            <img src="/assets/badge-appstore.png" alt="App Store" height="30" />
-                                                        </a>
-                                                    )}
-                                                    {project.playStoreUrl && (
-                                                        <a href={project.playStoreUrl} target="_blank" className="d-inline-block hover:opacity-75">
-                                                            <img src="/assets/badge-playstore.png" alt="Play Store" height="30" />
-                                                        </a>
-                                                    )}
-                                                </div>
-                                            )}
+                        {projects.map((project, index) => (
+                            <motion.div
+                                key={project.slug}
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: index * 0.1 }}
+                                className="col-md-6 col-lg-4"
+                            >
+                                <div className="card h-100 border-0 shadow-sm hover-card">
+                                    {project.thumbnail && (
+                                        <div style={{ height: '200px', overflow: 'hidden' }}>
+                                            <img
+                                                src={project.thumbnail}
+                                                alt={project.title}
+                                                className="card-img-top object-fit-cover w-100 h-100"
+                                                style={{ objectPosition: project.image_position || 'center center' }}
+                                            />
                                         </div>
+                                    )}
+                                    <div className="card-body p-4 d-flex flex-column">
+                                        <div className="small text-muted mb-2">
+                                            {project.startDate && new Date(project.startDate).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}
+                                            {project.endDate && ` - ${new Date(project.endDate).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}`}
+                                            {project.current && ' - Present'}
+                                        </div>
+                                        <h3 className="h5 fw-bold mb-3">
+                                            <Link href={`/project/${project.slug}`} className="text-dark text-decoration-none transition-colors hover:text-primary">
+                                                {project.title}
+                                            </Link>
+                                        </h3>
+                                        <p className="small text-secondary mb-4 flex-grow-1">
+                                            {truncateContent(project.content)}
+                                        </p>
+                                        <div className="mb-4">
+                                            {project.tags && project.tags.slice(0, 3).map(tag => (
+                                                <span key={tag} className="badge bg-surface text-secondary border me-1 mb-1">{tag}</span>
+                                            ))}
+                                            {project.tags && project.tags.length > 3 && <span className="text-muted extra-small">+{project.tags.length - 3}</span>}
+                                        </div>
+                                        <Link href={`/project/${project.slug}`} className="btn btn-link p-0 text-primary text-decoration-none fw-bold mt-auto stretched-link">
+                                            View Project <i className="fas fa-chevron-right ms-1 small"></i>
+                                        </Link>
                                     </div>
-                                </motion.div>
-                            );
-                        })}
+                                </div>
+                            </motion.div>
+                        ))}
+                        <div className="col-12 text-center mt-5">
+                            <Link href="/project" className="btn btn-outline-primary rounded-pill px-5">View All Projects</Link>
+                        </div>
                     </div>
                 </div>
             </section>
