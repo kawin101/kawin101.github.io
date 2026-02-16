@@ -5,7 +5,6 @@ var BlogPreview = createClass({
         var bgImage = this.props.getAsset(image);
         var title = entry.getIn(['data', 'title']);
         var date = entry.getIn(['data', 'date']);
-        var content = entry.getIn(['data', 'content']);
         var imagePosition = entry.getIn(['data', 'image_position']) || 'center center';
 
         return h('div', { className: "bg-white min-vh-100 py-5" },
@@ -13,7 +12,7 @@ var BlogPreview = createClass({
                 h('article', { className: "mx-auto", style: { maxWidth: '800px' } },
                     h('div', { className: "mb-5 text-center" },
                         h('h1', { className: "display-4 fw-bold mb-3" }, title),
-                        h('p', { className: "text-muted" }, date ? date.toString() : '')
+                        h('p', { className: "text-muted" }, date ? new Date(date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '')
                     ),
                     image ? h('div', { className: "mb-5 rounded overflow-hidden shadow-sm", style: { height: '400px' } },
                         h('img', {
@@ -30,3 +29,6 @@ var BlogPreview = createClass({
 });
 
 CMS.registerPreviewTemplate('blog', BlogPreview);
+CMS.registerPreviewStyle("https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css");
+CMS.registerPreviewStyle("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
+CMS.registerPreviewStyle("/admin/cms.css");

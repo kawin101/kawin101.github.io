@@ -1,34 +1,33 @@
 ---
 title: Dog-friendly Hotel Search Web Application Development
-startDate: 2023-11-01
+startDate: Nov 2023
 current: false
-endDate: 2024-04-30
-description: >-
-  • Developed a user-friendly website helping pet owners easily find
+endDate: Apr 2024
+content: >-
+  * Developed a user-friendly website helping pet owners easily find
   dog-friendly hotels.
 
 
-  • Designed a clean and responsive user interface using HTML, CSS, Bootstrap, and JavaScript.
+  * Designed a clean and responsive user interface using HTML, CSS, Bootstrap, and JavaScript.
 
 
-  • Built the system using Django to handle user accounts, reviews, and favorite lists.
+  * Built the system using Django to handle user accounts, reviews, and favorite lists.
 
 
-  • Created a search tool that filters hotels by name, location, and area for quick results.
+  * Created a search tool that filters hotels by name, location, and area for quick results.
 
 
-  • Connected Google Maps to show exact hotel locations and calculate travel routes.
+  * Connected Google Maps to show exact hotel locations and calculate travel routes.
 
 
-  • Set up a secure login system for users to register and reset passwords safely.
+  * Set up a secure login system for users to register and reset passwords safely.
 
 
-  • Created a tool using PHP to automatically collect hotel data so the list is always full.
+  * Created a tool using PHP to automatically collect hotel data so the list is always full.
 
 
-  • Built an easy-to-use dashboard for administrators to update hotel details and photos.
+  * Built an easy-to-use dashboard for administrators to update hotel details and photos.
 thumbnail: /images/uploads/project-hotel-search.png
-pdfUrl: ""
 projectUrl: https://www.canva.com/design/DAGBVAjIhO4/HgOONDhep9MqNfpQZRaStw/view?utm_content=DAGBVAjIhO4&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h8f08c83569
 repoUrl: https://github.com/Kawin101/Django_E-Commerce
 tags:
@@ -42,18 +41,3 @@ tags:
   - jQuery
   - Google Map API
 ---
-• Developed a user-friendly website helping pet owners easily find dog-friendly hotels.
-
-• Designed a clean and responsive user interface using HTML, CSS, Bootstrap, and JavaScript.
-
-• Built the system using Django to handle user accounts, reviews, and favorite lists.
-
-• Created a search tool that filters hotels by name, location, and area for quick results.
-
-• Connected Google Maps to show exact hotel locations and calculate travel routes.
-
-• Set up a secure login system for users to register and reset passwords safely.
-
-• Created a tool using PHP to automatically collect hotel data so the list is always full.
-
-• Built an easy-to-use dashboard for administrators to update hotel details and photos.

@@ -1,0 +1,54 @@
+/* Custom CSS for Decap CMS Preview */
+
+:root {
+    --primary-color: #2563eb;
+    --secondary-color: #475569;
+    --bg-body: #ffffff;
+    --bg-surface: #f8fafc;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --border-color: #e2e8f0;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--text-primary);
+    background: var(--bg-surface);
+}
+
+.markdown-content {
+    line-height: 1.6;
+}
+
+.markdown-content a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.markdown-content a:hover {
+    text-decoration: underline;
+}
+
+.badge {
+    font-weight: 500;
+    padding: 0.5em 1em;
+}
+
+.bg-surface {
+    background-color: var(--bg-surface) !important;
+}
+
+.text-secondary {
+    color: var(--text-secondary) !important;
+}
+
+/* Ensure images fit well in preview */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.object-fit-cover {
+    object-fit: cover;
+}

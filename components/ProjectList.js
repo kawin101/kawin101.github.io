@@ -116,9 +116,10 @@ export default function ProjectList({ projects }) {
                                                     {project.title}
                                                 </Link>
                                             </h2>
-                                            <p className="card-text text-secondary mb-4 flex-grow-1">
-                                                {truncateContent(project.content)}
-                                            </p>
+                                            <div
+                                                className="card-text text-secondary mb-4 flex-grow-1 small"
+                                                dangerouslySetInnerHTML={{ __html: truncateContent(project.content) }}
+                                            />
                                             <div className="mb-4">
                                                 {project.tags && project.tags.slice(0, 3).map(tag => (
                                                     <span key={tag} className="badge bg-surface text-secondary border me-1 mb-1">{tag}</span>

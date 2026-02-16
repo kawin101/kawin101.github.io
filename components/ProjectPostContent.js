@@ -48,7 +48,7 @@ export default function ProjectPostContent({ project, content }) {
                         </div>
                     )}
 
-                    <div className="markdown-content lead text-secondary mb-5" dangerouslySetInnerHTML={{ __html: content }} />
+                    <div className="markdown-content text-secondary mb-5" dangerouslySetInnerHTML={{ __html: content }} />
 
                     {/* Action Buttons for Projects */}
                     <div className="d-flex flex-wrap gap-3 justify-content-center pt-5 border-top">
