@@ -17,7 +17,7 @@ content: >-
   * **Premium Glassmorphism Design**: High-end modern UI with fluid animations using Framer Motion and built-in Dark/Light mode switching.
 
   * **Automated Lead Capture**: Direct connection to Formspree email so clients can contact or hire you without leaving the portfolio page.
-thumbnail: /images/uploads/screenshot-2569-02-21-at-3.50.24 pm.png
+thumbnail: /images/uploads/screenshot-2569-02-21-at-3.50.24 pm.png
 tags:
   - Web
   - Git

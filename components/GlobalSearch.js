@@ -26,8 +26,8 @@ export default function GlobalSearch({ isOpen, onClose, data }) {
 
         // 1. Projects
         data.projects?.forEach(item => {
-            if (item.title.toLowerCase().includes(term) ||
-                item.description.toLowerCase().includes(term) ||
+            if (item.title?.toLowerCase().includes(term) ||
+                item.description?.toLowerCase().includes(term) ||
                 item.tags?.some(tag => tag.toLowerCase().includes(term))) {
                 matches.push({
                     type: 'Project',

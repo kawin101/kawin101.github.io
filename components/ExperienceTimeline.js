@@ -149,8 +149,11 @@ export default function ExperienceTimeline({ experience }) {
                                             <span className="btn btn-dark btn-sm d-none">Play Store</span>
                                         </a>
                                     )}
-                                    {job.links && job.links.map(link => (
-                                        <a key={link.url} href={link.url} target="_blank" className={`btn btn-sm rounded-pill px-3 py-2 ${link.platform === 'Apple' ? 'btn-secondary' : 'btn-primary-glow'}`}>
+                                    {job.links && job.links.map((link, idx) => (
+                                        <a key={idx} href={link.file || link.url} target="_blank" rel="noopener noreferrer" className={`btn btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2 ${link.platform === 'Apple' ? 'btn-secondary' : 'btn-primary-glow'}`}>
+                                            {link.file && (
+                                                <i className="fas fa-file-pdf text-danger bg-white rounded-circle p-1" style={{ fontSize: '14px' }}></i>
+                                            )}
                                             {link.label}
                                         </a>
                                     ))}

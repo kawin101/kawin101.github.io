@@ -49,8 +49,9 @@ collections:
       - {label: "Play Store URL", name: "playStoreUrl", widget: "string", required: false}
       - {label: "Logos/Links", name: "links", widget: "list", fields: [
           {label: "Label", name: "label", widget: "string"}, 
-          {label: "URL", name: "url", widget: "string"},
-          {label: "Platform", name: "platform", widget: "select", options: ["Google", "Apple", "Other"], default: "Google"}
+          {label: "URL", name: "url", widget: "string", required: false},
+          {label: "Platform", name: "platform", widget: "select", options: ["Google", "Apple", "Other"], default: "Google"},
+          {label: "Document (PDF)", name: "file", widget: "file", required: false, hint: "Optional upload for PDF documentation (can be used instead of URL)"}
         ]}
 
   - name: "education"
