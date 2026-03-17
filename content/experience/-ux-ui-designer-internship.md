@@ -15,8 +15,9 @@ technologies:
   - GCP
 links:
   - platform: Other
-    url: https://www.canva.com/design/DAFoMeYjVS0/n7h69B_ANEygepb0vwtI0Q/view?utm_content=DAFoMeYjVS0&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h0606ad572f
+    url: ""
     label: Summary of Internship on Canva
+    file: /images/uploads/trainee2023.pdf
   - platform: Other
     label: UX/UI Designer Internship Certificate from BOTNOI GROUP
     file: /images/uploads/cer-13.pdf

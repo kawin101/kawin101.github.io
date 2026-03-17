@@ -18,8 +18,8 @@ echo "🚀 Starting Next.js Server and Decap CMS Proxy..."
 echo "Press Ctrl+C to stop both servers."
 echo "-------------------------------------------------"
 
-# Open the local CMS URL automatically after 4 seconds to give servers time to start
-(sleep 4 && open "http://localhost:3000/admin/index.html/") &
+# Open the local URLs automatically after 4 seconds to give servers time to start
+(sleep 4 && open "http://localhost:3000" && open "http://localhost:3000/admin/index.html/") &
 
 # Use concurrently to run both commands in parallel and kill both if either exits
 npx --yes concurrently \
