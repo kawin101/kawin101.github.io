@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kawinphop Chomnikorn – Mobile Developer (Flutter)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f8fb; --panel:#ffffff; --ink:#14212e; --muted:#566678;
+  --line:#d9e2ea; --accent:#0b5fa5; --accent-soft:#e3f0fa; --side:#0f2a43; --side-ink:#e8f1f8; --side-muted:#9db6cb;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"Figtree","Segoe UI",system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0b1620; --panel:#112231; --ink:#e6eef5; --muted:#9fb2c3; --line:#223a4f; --accent:#6bb7f0; --accent-soft:#16344c; --side:#0a1b2b; }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--body)}
+a{color:var(--accent)}
+a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:320px 1fr;min-height:100vh}
+aside{background:var(--side);color:var(--side-ink);padding:48px 32px}
+aside a{color:var(--side-ink)}
+.name{font:800 2.2rem/1.05 var(--display);margin:0 0 8px;letter-spacing:-.02em}
+.role{margin:0 0 32px;color:var(--side-muted);font-weight:500}
+aside h2{font:700 1rem var(--display);margin:32px 0 10px;color:#fff;border-bottom:1px solid rgba(255,255,255,.18);padding-bottom:6px}
+aside dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:.92rem}
+aside dt{color:var(--side-muted)}
+aside dd{margin:0;word-break:break-word}
+aside ul{list-style:none;margin:0;padding:0;font-size:.92rem}
+aside li{margin:0 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{background:rgba(255,255,255,.1);border-radius:4px;padding:2px 9px;font-size:.84rem}
+main{padding:48px 48px 64px}
+section{margin-bottom:48px}
+main h2{font:700 1.5rem var(--display);margin:0 0 20px;letter-spacing:-.01em}
+.summary{font-size:1.1rem;max-width:62ch;margin:0 0 44px}
+.summary b{font-weight:600}
+/* timeline: entries are a true chronological sequence */
+.timeline{position:relative;margin:0;padding:0 0 0 28px;list-style:none;border-left:2px solid var(--line)}
+.job{position:relative;margin:0 0 36px}
+.job::before{content:"";position:absolute;left:-37px;top:7px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:3px solid var(--accent)}
+.job.current::before{background:var(--accent)}
+.job h3{font:700 1.2rem var(--display);margin:0}
+.job .org{font-weight:600;color:var(--accent);margin:0}
+.job .when{color:var(--muted);font-size:.9rem;margin:2px 0 10px}
+.job ul{margin:0;padding-left:20px}
+.job li{margin:0 0 5px;max-width:70ch}
+.sub{margin:16px 0 0;padding:14px 16px;background:var(--accent-soft);border-radius:8px}
+.sub h4{margin:0 0 6px;font:700 .95rem var(--display)}
+.sub ul{padding-left:18px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px 20px}
+.card h3{font:700 1.05rem var(--display);margin:0 0 6px}
+.card p{margin:0 0 10px;color:var(--muted);font-size:.93rem}
+.card .links{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.92rem;font-weight:500}
+.project{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:20px 22px}
+.project h3{font:700 1.1rem var(--display);margin:0 0 8px}
+.project ul{margin:0 0 10px;padding-left:20px}
+.edu{margin:0}
+.edu strong{font-family:var(--display);font-size:1.1rem}
+@media (max-width:820px){
+  .wrap{grid-template-columns:1fr}
+  aside{padding:36px 24px}
+  main{padding:32px 24px 48px}
+}
+@media print{
+  :root{--bg:#fff;--panel:#fff;--ink:#000;--muted:#333;--line:#bbb;--accent:#0b5fa5;--accent-soft:#eef5fb}
+  body{font-size:11pt}
+  .wrap{display:block;max-width:none}
+  aside{background:#fff;color:#000;padding:0 0 12px}
+  aside a,aside h2{color:#000}
+  aside dt,.role{color:#333}
+  .chips span{background:#eef2f5}
+  main{padding:0}
+  .job,.card,.project{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <aside>
+    <img alt="Kawinphop Chomnikorn" loading="lazy" width="280" height="280" decoding="async" data-nimg="1" class="rounded-circle shadow-lg border border-4 border-white object-fit-cover" src="https://avatars.githubusercontent.com/u/76491614" style="color: transparent;">
+    <br><br/>
+    <h1 class="name">Kawinphop Chomnikorn</h1>
+    <p class="role">Mobile Developer (Flutter)</p>
+
+    <h2>Contact</h2>
+    <dl>
+      <!-- <dt>Phone</dt><dd><a href="tel:0987654321">0987654321</a></dd> -->
+      <dt>Email</dt><dd><a href="mailto:kawinphop.chomnikorn@gmail.com">kawinphop.chomnikorn@gmail.com</a></dd>
+      <dt>GitHub</dt><dd><a href="https://github.com/kawin101">github.com/kawin101</a></dd>
+      <dt>Address</dt><dd>Bangkok, Thailand</dd>
+    </dl>
+
+    <h2>Job preferences</h2>
+    <dl>
+      <dt>Positions</dt><dd>Mobile Developer, Backend Developer</dd>
+      <dt>Type</dt><dd>Full-time, part-time, freelance</dd>
+      <dt>Location</dt><dd>Onsite, hybrid, or work from home</dd>
+      <dt>Available</dt><dd>With 1 month notice</dd>
+    </dl>
+
+    <h2>Mobile &amp; tools</h2>
+    <div class="chips">
+      <span>Flutter</span><span>Provider</span><span>Riverpod</span><span>Firebase</span><span>FCM</span>
+      <span>RevenueCat</span><span>RESTful APIs</span><span>Web Socket</span><span>Git</span>
+      <span>App Store Connect</span><span>Google Play Console</span><span>Xcode</span><span>Android Studio</span>
+      <span>Postman</span><span>Figma</span><span>Jira</span><span>ClickUp</span>
+    </div>
+
+    <h2>Web</h2>
+    <div class="chips">
+      <span>Django</span><span>JavaScript</span><span>MySQL</span><span>HTML</span><span>CSS</span><span>Bootstrap</span>
+    </div>
+
+    <h2>Languages</h2>
+    <dl>
+      <dt>Thai</dt><dd>Good (speaking, reading, writing)</dd>
+      <dt>English</dt><dd>Basic (speaking, reading, writing)</dd>
+    </dl>
+
+    <h2>Other</h2>
+    <dl>
+      <dt>Driving</dt><dd>Motorcycle, car</dd>
+      <dt>Military</dt><dd>Completed</dd>
+    </dl>
+  </aside>
+
+  <main>
+    <p class="summary">Flutter developer with 2 years of experience building mobile and desktop apps for iOS, Android, and Linux. At PTT Digital, I develop POS apps for retail stores, gas stations, and coffee shops. Previously, I led the mobile team at Botnoi, working on "Botnoi Voice – Text to Speech" and "AI Friend Hub" for iOS and Android. I'm passionate about user-friendly interfaces, user experience, high-performance code, software testing, and launching products to global marketplaces. I hold a B.Sc. in Computer Science from Khon Kaen University.</p>
+
+    <section aria-labelledby="exp">
+      <h2 id="exp">Work experience</h2>
+      <ol class="timeline">
+
+        <li class="job current">
+          <h3>Mobile Developer (Flutter)</h3>
+          <p class="org">PTT Digital Solution Company Limited</p>
+          <p class="when">May 2026 – Present · Bangkok</p>
+          <ul>
+            <li>Developed desktop and mobile apps for Linux and Android with Flutter.</li>
+            <li>Built POS apps for retail stores, gas stations, and coffee shops.</li>
+            <li>Released apps on a private app store.</li>
+          </ul>
+        </li>
+
+        <li class="job">
+          <h3>Mobile Developer (Flutter)</h3>
+          <p class="org">iBotnoi Company Limited</p>
+          <p class="when">June 2024 – May 2026 · Bangkok</p>
+          <ul>
+            <li>Developed iOS and Android apps using Flutter on a single codebase.</li>
+            <li>Built the full app from design to code, with full support for mobile and tablet.</li>
+            <li>Built RESTful APIs using Supabase Edge Functions for AI agents, chat, reviews, and history.</li>
+            <li>Integrated AWS S3 and optimized large images, saving 90% of memory on mobile devices.</li>
+            <li>Connected OpenAI and Google Gemini APIs for text and image generation.</li>
+            <li>Connected APIs for text-to-speech, subtitles, reward points, and payments, handling secure data with JWT.</li>
+            <li>Enabled Google Cloud Platform APIs for real-time notifications and in-app purchase transactions.</li>
+            <li>Set up in-app purchases using RevenueCat and webhooks to handle user points.</li>
+            <li>Integrated push and in-app notifications with Firebase (FCM).</li>
+            <li>Added multi-language support (English, Thai, Indonesian).</li>
+            <li>Built features to download and share audio files directly to social apps.</li>
+            <li>Implemented secure login (Google, Apple, LINE, email) and auto-login.</li>
+            <li>Integrated account management features (register, forgot password, delete account).</li>
+            <li>Automated deployment for testing and production using Fastlane, reducing time from 60 minutes to 5 minutes.</li>
+            <li>Handled the release process to the App Store and Google Play in 175 countries.</li>
+          </ul>
+        </li>
+
+        <li class="job">
+          <h3>Teaching Assistant</h3>
+          <p class="org">Khon Kaen University, Nong Khai Campus</p>
+          <p class="when">November 2023 – April 2024 · Nong Khai</p>
+          <ul>
+            <li>Taught students to build an expense tracker app with Flask (Python) and SQLite.</li>
+            <li>Guided 50 students in building LINE and Facebook chatbots with Botnoi, Google Apps Script, and Google Sheets, featuring food ordering, queue management, payments, and search.</li>
+            <li>Led data analytics sessions in Excel and Power BI, covering data cleaning, pivot tables, and data visualization.</li>
+            <li>Made lesson materials and helped students fix coding problems.</li>
+            <li>Worked with professors to create practical lessons.</li>
+          </ul>
+        </li>
+
+        <li class="job">
+          <h3>UX/UI Designer Intern</h3>
+          <p class="org">iBotnoi Company Limited</p>
+          <p class="when">April 2023 – May 2023 · Bangkok</p>
+          <ul>
+            <li>Designed UI for websites, mobile apps, and chatbots.</li>
+            <li>Created user flows, user journeys, and low-fidelity wireframes.</li>
+            <li>Built Flutter apps with profile customization, color picking, and photo uploads.</li>
+            <li>Developed a LINE chatbot with the Botnoi Chatbot Platform and Google Apps Script that records voice messages and saves them to Google Drive.</li>
+            <li>Automated email sending with Python scripts.</li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+
+    <section aria-labelledby="apps">
+      <h2 id="apps">Published apps</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Botnoi Voice – Text to Speech</h3>
+          <p>Company app, iOS and Android.</p>
+          <div class="links">
+            <a href="https://play.google.com/store/apps/details?id=com.mobile.botnoivoice&amp;hl=en">Google Play</a>
+            <a href="https://apps.apple.com/th/app/botnoi-voice-text-to-speech/id6670564712">App Store</a>
+          </div>
+        </div>
+        <div class="card">
+          <h3>AI Friend Hub</h3>
+          <p>Company app, iOS and Android.</p>
+          <div class="links">
+            <a href="https://play.google.com/store/apps/details?id=com.botnoimobile.aifriendhub">Google Play</a>
+            <a href="https://apps.apple.com/th/app/ai-friend-hub/id6744385578">App Store</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="proj">
+      <h2 id="proj">Project</h2>
+      <div class="project">
+        <h3>Dog-friendly hotel search web application</h3>
+        <ul>
+          <li>Built a web app for finding dog-friendly hotels with Django.</li>
+          <li>Added user registration and login.</li>
+          <li>Built hotel search by name, address, postal code, and region.</li>
+          <li>Used the Google Maps API to show hotel locations and plan routes with multiple stops, including distance and travel time.</li>
+          <li>Added hotel reviews with 1–5 star ratings and a favorites list.</li>
+          <li>Built an admin panel with Django Admin to manage hotels, and a dashboard with jQuery to track search trends.</li>
+          <li>Added pagination to hotel listings.</li>
+        </ul>
+        <a href="https://github.com/Kawin101/Django_ECommerce">github.com/Kawin101/Django_ECommerce</a>
+      </div>
+    </section>
+
+    <section aria-labelledby="edu">
+      <h2 id="edu">Education</h2>
+      <p class="edu"><strong>Bachelor of Science, Computer Science</strong><br>
+      Khon Kaen University · Graduated 2024 · GPA 3.68</p>
+    </section>
+  </main>
+</div>
+</body>
+</html>

@@ -1,4 +1,0 @@
----
-category: Technical
-title: Xcode
----
